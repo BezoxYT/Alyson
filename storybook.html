@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notre Histoire</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4e4d7;
+            font-family: 'Georgia', serif;
+        }
+        .book {
+            position: relative;
+            width: 360px;
+            height: 500px;
+            perspective: 1500px;
+            margin-top: -100px;
+        
+        }
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 20px;
+            backface-visibility: hidden;
+            transition: transform 1s, z-index 1s;
+            transform-origin: left;
+        }
+        .cover {
+            background: #c39b77;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        .turn {
+            transform: rotateY(-180deg);
+        }
+        .content {
+            padding: 20px;
+        }
+        .next-btn, .prev-btn {
+            position: absolute;
+            bottom: 10px;
+            background: #c39b77;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .next-btn { right: 20px; }
+        .prev-btn { left: 20px; }
+        
+        .home-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #c39b77;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="book">
+        <div class="page cover" id="cover">
+            <div class="content">
+                <h1>Notre Histoire</h1>
+                <h2>Un amour inattendu</h2>
+                <p>Écrit par <strong>Dono</strong></p>
+                <button class="next-btn" onclick="turnPage(1)">Ouvrir</button>
+            </div>
+        </div>
+        <div class="page" id="page1">
+            <div class="content">
+                <p>Tout a commencé un soir de novembre, plus précisément le <strong>18 novembre 2023</strong>. Ce jour-là, j’ai ajouté Alyson sur Snapchat, sans vraiment savoir que cette simple action allait changer tant de choses, que ce petit geste allait marquer le début d’une histoire qui me tiendrait à cœur bien plus que je ne l’aurais imaginé. Elle a accepté ma demande, et on a commencé à parler. Rien de trop sérieux au début, juste quelques messages échangés, une conversation qui se tisse doucement.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page2">
+            <div class="content">
+                <p>Mais rapidement, ce n’était plus juste des mots envoyés sur un écran. Chaque soir, nos discussions s’allongeaient, nos voix résonnaient dans la nuit, et on apprenait à se connaître, à s’apprécier, à se comprendre. Ce n’était plus juste des discussions. C’était devenu un rituel, une attente, un besoin. Et chaque soir, je sentais un peu plus mon cœur s’attacher à elle. Et c’est là que, sans même l’avoir encore rencontrée, je savais déjà que quelque chose de spécial se créait entre nous. Je l’aimais.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page3">
+            <div class="content">
+                <p>Mais l’histoire n’a pas été aussi simple, le <strong>20 décembre 2023</strong>, tout s’est brusquement arrêté. Plus aucun message, plus aucun appel. Ce jour-là, Alyson m’a bloqué de partout. Sans avertissement. D’un coup, un silence brutal. Juste un vide, un silence pesant. Elle avait ses raisons – elle n’était pas prête, elle savait que nos différences, notamment d’âge, ne plairaient pas à ses parents. Mais moi, j’étais juste dévasté. Dire que aussi vite qu’elle était entrée dans ma vie, elle en était sortie.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page4">
+            <div class="content">
+                <p>J’ai essayé de tourner la page. Vraiment. J’ai voulu oublier. Mais au fond, je ne l’ai jamais fait, parce qu’on peut tenter d’oublier quelqu’un… mais on n’efface pas ce qui a compté. Et un an plus tard, un signe du destin est venu raviver ce que je croyais perdu. Le <strong>20 décembre 2024</strong>, alors que j’étais en voyage à Toronto avec mes deux meilleurs amis, une notification est apparue sur mon téléphone : Alyson vous a ajouté sur Snapchat.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page5">
+            <div class="content">
+                <p>J’ai eu un moment d’arrêt, j’ai ressenti un tourbillon d’émotions. Un mélange de surprise, d’émotions contradictoires, de souvenirs qui resurgissent. J’aurais pu lui en vouloir, me dire qu’elle m’avait blessé, qu’elle n’avait plus sa place dans ma vie… Mais non. Pas une seule seconde la colère ou l’orgueil ne m’ont traversé l’esprit. De la surprise, de l’incompréhension, de l’excitation… mais pas de la rancune. Jamais je ne lui en ai voulu. J’étais juste heureux. Heureux qu’elle soit revenue. Heureux que l’histoire ne soit pas finie.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page6">
+            <div class="content">
+                <p>Alors, on a recommencé à se parler, comme avant. Non, mieux qu’avant. Plus intensément. Plus sincèrement. Plus beau. Je crois que je l’aime encore plus qu’avant. Nos appels durent plusieurs heures… et pourtant, le temps semble s’éclipser en un battement de cils. On rit, on se confie, on rêve ensemble. Et plus les jours passent, plus je suis convaincu d’une chose : je l’aime encore plus qu’avant.</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page7">
+            <div class="content">
+                <p>Et maintenant, je n’attends plus qu’une chose : notre première rencontre. Notre premier regard échangé, notre premier sourire partagé, notre premier baiser volé. Je veux lui donner tout l’amour qu’elle mérite, tout l’amour que je ressens. Et le plus beau dans tout ça ? Le reste de l’histoire est à écrire…</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page8">
+            <div class="content">
+                <p>Mais moi, je sais déjà comment elle se termine...</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+                <button class="next-btn" onclick="turnPage(1)">→</button>
+            </div>
+        </div>
+        <div class="page" id="page9">
+            <div class="content">
+                <p>Avec une fin heureuse</p>
+                <button class="prev-btn" onclick="turnPage(-1)">←</button>
+            </div>
+        </div>
+    </div>
+    <button class="home-btn" onclick="window.location.href='main.html'">Retour à l'accueil</button>
+
+
+    <script>
+        window.onload = function() {
+            let currentPageIndex = 0;
+            const pages = document.querySelectorAll(".page");
+
+            function updateZIndexes() {
+                pages.forEach((page, index) => {
+                    page.style.zIndex = pages.length - index;
+                });
+            }
+
+            function turnPage(direction) {
+                if (direction === 1 && currentPageIndex < pages.length - 1) {
+                    pages[currentPageIndex].classList.add("turn");
+                    currentPageIndex++;
+                } 
+                else if (direction === -1 && currentPageIndex > 0) {
+                    pages[currentPageIndex - 1].classList.remove("turn");
+                    currentPageIndex--;
+                }
+                updateZIndexes();
+            }
+
+            updateZIndexes();
+            window.turnPage = turnPage; // Expose la fonction pour l'utiliser dans le HTML
+        };
+    </script>
+</body>
+</html>

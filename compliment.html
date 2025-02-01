@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Compliments ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial, sans-serif';
+            background-color: #ffe6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 73%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #ff4d4d;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff1a1a;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff4d4d;
+            font-size: 24px;
+            animation: float 5s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Compliments ❤️</h1>
+        <div class="message" id="compliment">Cliquez sur le bouton pour générer un compliment.</div>
+        <button onclick="generateCompliment()">Générer</button>
+        <button onclick="goBack()">Retour</button>
+    </div>
+
+    <script>
+        const compliments = [
+            "Tu es incroyable !",
+            "Je t'aime plus que tout.",
+            "Tu es la meilleure chose qui me soit arrivée.",
+            "Ton sourire illumine ma journée.",
+            "Je suis tellement chanceux de t'avoir.",
+            "Tu es magnifique.",
+            "Tu es une personne extraordinaire.",
+            "Tu es une source de bonheur.",
+            "Tu es une inspiration pour moi.",
+            "Tu es une étoile dans ma vie.",
+            "Tu es une perle rare.",
+            "Tu es une personne exceptionnelle.",
+            "Tu es une merveille.",
+            "Tu es une beauté.",
+            "Tu es une déesse.",
+            "Tu es une reine.",
+            "Tu es une princesse.",
+            "Tu es une fée.",
+            "Tu es une étoile brillante.",
+            "Tu es une lumière dans ma vie.",
+            "Tu es une bouffée d'air frais.",
+            "Tu es une oasis dans le désert.",
+            "Tu es une oasis de bonheur.",
+            "Tu es la lumière de ma vie.",
+            "Tu es la raison de mon bonheur.",
+            "Tu es la raison de mon sourire.",
+            "Tu es gentille.",
+            "Tu es douce.",
+            "Tu es aimante.",
+            "Tu es attentionnée.",
+            "Tu es affectueuse.",
+            "Tu es adorable.",
+            "Tu es charmante.",
+            "Tu es ravissante.",
+            "Tu es belle.",
+            "Tu es jolie.",
+            "Tu es mignonne.",
+            "Tu es splendide.",
+            "Tu es superbe.",
+            "Tu es sublime.",
+            "Tu es élégante.",
+            "Tu es gracieuse.",
+            "Tu es délicate.",
+            "Tu es douce comme une fleur.",
+            "Tu es douce comme une rose.",
+            "Tu es drôle.",
+            "Tu es amusante.",
+            "Tu es joyeuse.",
+            "Tu es pétillante.",
+            "Tu es rayonnante.",
+            "Tu es radieuse.",
+            "Tu es resplendissante.",
+            "Tu es éclatante.",
+            "Tu es étincelante.",
+            "Tu es éblouissante.",
+            "Tu es mon coeur.",
+            "Tu es mon âme.",
+            "Tu es mon amour.",
+            "Tu es mon trésor.",
+            "Tu es mon bonheur.",
+            "Tu es mon rayon de soleil.",
+            "Tu es mon étoile.",
+            "Tu es mon ange.",
+            "Tu es mon rêve.",
+            "Tu es celle qui fait briller mes journées.",
+            "Tu es mon miroir, et je t’admire.",
+            "Tu es l’art du bonheur incarné.",
+            "Tu es une mélodie douce à mes oreilles.",
+            "Tu as ce petit quelque chose qui rend tout parfait.",
+            "Tu es la personne qui rend ma vie plus belle.",
+            "Ta beauté est sans égale.",
+            "Tu es comme un rayon de lumière dans une journée grise.",
+            "Ton rire est une symphonie qui illumine l’âme.",
+            "Tu as un charme fou.",
+            "Ton regard me fait fondre.",
+            "Tu es celle que j'attendais.",
+            "Tu es mon doux secret.",
+            "Tu es un trésor que j’ai la chance de découvrir chaque jour.",
+            "Tu es unique, et j’adore cela.",
+            "Ton énergie est contagieuse.",
+            "Ta présence est apaisante.",
+            "Je me sens si bien avec toi.",
+            "Ton amour me porte chaque jour.",
+            "Ta voix est douce et réconfortante.",
+            "Tu es une fleur dans un champ de roses.",
+            "Ta gentillesse n’a pas de limite.",
+            "Tu es une vraie perle rare.",
+            "Tu fais naître un sourire même dans les moments difficiles.",
+            "Tu es la définition de la beauté naturelle.",
+            "Ton esprit est aussi brillant que ton sourire.",
+            "Tu es un rayon de soleil même quand il pleut.",
+            "Ton charme est irrésistible.",
+            "Tu es un feu sacré qui illumine ma vie.",
+            "Tu as une énergie qui me fait rêver.",
+            "Ton sourire fait fondre tous les cœurs.",
+            "Avec toi, le monde semble plus beau.",
+            "Tu es un véritable enchantement.",
+            "Tu es une danseuse de lumière dans mon cœur.",
+            "Ton regard est un univers en soi.",
+            "Tu es celle qui rend tout plus simple.",
+            "Ton âme est d’une pureté infinie.",
+            "Tu es un mélange parfait de beauté et de gentillesse.",
+            "Ton amour est tout ce dont j’ai besoin.",
+            "Ton cœur est plus grand que tout l’univers.",
+            "Tu es un voyage que je veux entreprendre chaque jour.",
+            "Avec toi, je touche le ciel.",
+            "Ton amour est mon évasion.",
+            "Tu es mon étoile filante.",
+            "Tu es mon équilibre.",
+            "Tu es mon tout.",
+            "Ton sourire rend tout plus doux.",
+            "Tu es comme un rêve éveillé.",
+            "Tu es ma douceur dans ce monde un peu trop dur.",
+            "Ta présence dans ma vie est un cadeau.",
+            "Tu es l'incarnation de la perfection.",
+            "Tu es un rayon de bonheur qui ne cesse de briller.",
+            "Ton esprit est une source d’inspiration infinie.",
+            "Ta beauté est un chef-d'œuvre.",
+            "Tu es un miracle de la nature.",
+            "Ta générosité dépasse les frontières de l’imaginaire.",
+            "Tu es celle que je cherche dans toutes mes vies.",
+            "Tu es une véritable muse pour mon cœur.",
+            "Tu es ma raison d’être.",
+            "Ton amour me comble.",
+            "Tu es l’unique et précieuse.",
+            "Tu es la meilleure de toutes.",
+            "Tu es mon petit bonheur quotidien.",
+            "Tu es ma pensée positive du matin.",
+            "Tu es ma plus belle réussite.",
+            "Ton amour est un feu sacré dans mon cœur.",
+            "Ta gentillesse est un modèle pour le monde entier.",
+            "Avec toi, je ne connais ni peur ni doute.",
+            "Ton amour est ma force.",
+            "Tu es ma plus belle aventure.",
+            "Tu es la personne qui complète ma vie.",
+            "Tu es mon bonheur, chaque jour un peu plus.",
+            "Tu es une mélodie qui réchauffe mon cœur.",
+            "Tu illumines chaque pièce où tu entres.",
+            "Ta présence est un apaisement total.",
+            "Tu es l'oxygène qui me donne vie.",
+            "Ton rire est une chanson qui me fait sourire.",
+            "Tu es un chef-d'œuvre vivant.",
+            "Ton amour est une douce évasion.",
+            "Tu es mon adoration."
+        ];
+
+        function generateCompliment() {
+            const randomIndex = Math.floor(Math.random() * compliments.length);
+            document.getElementById('compliment').innerText = compliments[randomIndex];
+            for (let i = 0; i < 5; i++) { // Créez plus de cœurs
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de "Je t'aime" ❤️</title>
+    <style>
+        body {
+            font-family: 'Arial, sans-serif';
+            background-color: #ffe6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 73%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #ff4d4d;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #ff1a1a;
+        }
+
+        .heart {
+            position: absolute;
+            color: #ff4d4d;
+            font-size: 24px;
+            animation: float 5s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de "Je t'aime" ❤️</h1>
+        <div class="message" id="loveMessage">Clique sur le bouton pour générer un message</div>
+        <button onclick="generateLoveMessage()">Générer</button>
+        <button onclick="goBack()">Retour</button>
+    </div>
+
+    <script>
+        const messages = [
+            "Je t'aime plus que tout au monde ❤️",
+            "Je t'aime Alyson ❤️",
+            "Je t'aime, tu es la lumière de ma vie 🌟",
+            "Je t'aime, chaque jour avec toi est un cadeau 🎁",
+            "Je t'aime, mon amour pour toi est infini ♾️",
+            "Je t'aime, tu es mon âme sœur 💞",
+            "Je t'aime, je pense à toi à chaque instant 💭",
+            "Je t'aime, tu es la raison de mon sourire 😊",
+            "Je t'aime plus que les mots ne peuvent le dire 💬",
+            "Je t'aime, avec toi, je suis la personne la plus heureuse du monde 🌍",
+            "Je t'aime, tu es mon tout, mon amour, ma vie ❤️",
+            "Je t'aime, tu es la plus belle chose qui me soit arrivée 🌹",
+            "Je t'aime, tu es mon bonheur, ma joie, mon amour ❤️",
+            "Je t'aime, tu es la personne la plus incroyable que je connaisse 🌈",
+            "Je t'aime plus que le chocolat 🍫",
+            "Je t'aime, tu es mon rêve devenu réalité 🌠",
+            "Je t'aime, avec toi, je suis moi-même, et c'est le plus beau cadeau 🎁",
+            "Je t'aime, tu es ma moitié, mon équilibre, mon amour ❤️",
+            "Je t'aime, tu es la personne la plus merveilleuse que j'aie jamais rencontrée 🌟",
+            "Je t'aime plus que le café ☕️",
+            "Je t'aime, tu es mon soleil, ma lune, mes étoiles 🌞🌙✨",
+            "Je t'aime, avec toi, je suis complet, je suis moi-même ❤️",
+            "Je t'aime, tu es mon univers, ma galaxie, mon amour 🌌",
+            "Je t'aime plus que les étoiles dans le ciel 🌠",
+            "Je t'aime, tu es mon trésor le plus précieux 💎",
+            "Je t'aime, avec toi, je suis invincible, je suis fort, je suis aimé ❤️",
+            "Je t'aime, tu es mon oxygène, ma vie, mon amour 💨",
+            "Je t'aime, tu es la personne la plus importante de ma vie 🌍",
+            "Je t'aime plus que la vie elle-même ❤️",
+            "Je t'aime, tu es mon tout, mon amour, ma raison de vivre ❤️"        
+        ];
+
+        function generateLoveMessage() {
+            const messageElement = document.getElementById('loveMessage');
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            messageElement.textContent = messages[randomIndex];
+            for (let i = 0; i < 5; i++) { // Créez plus de cœurs
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>

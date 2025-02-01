@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    
+        #homeButton {
+            position: fixed;
+            padding: 5px 11px;
+            z-index: 10;
+            left: 31px;
+            top: 1px;
+        }
+        .container-puzzle {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 93%;
+    position: relative;
+    z-index: 1;
+    max-height: 100%;
+    overflow: hidden;
+    min-height: 400px;
+}
+
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(4, 75px);
+            grid-template-rows: repeat(4, 75px);
+            gap: 2px;
+            margin: auto;
+            width: 308px;
+            height: 308px;
+            position: relative;
+            border: 2px solid black;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .piece-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 237px;
+            margin: 20px auto;
+            border: 2px solid black;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .piece {
+            width: 75px;
+            height: 75px;
+            background-size: 300px 300px;
+            cursor: grab;
+            margin: 2px;
+        }
+        .slot {
+            width: 75px;
+            height: 75px;
+            border: 1px dashed black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hidden-image {
+            display: none;
+            width: 308px;
+            height: 308px;
+            background-size: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 20;
+            opacity: 0;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        .popup p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .popup button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            background: #ff4081;
+            color: white;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .popup button:hover {
+            background: #e91e63;
+        }
+        .solved {
+    visibility: hidden;
+}
+
+.hidden-image {
+    z-index: 20; 
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-puzzle">
+        <h1>Puzzle</h1>
+        <p>Complétez le puzzle pour révéler l'image.</p>
+        <div class="puzzle-container" id="puzzle">
+            <div class="hidden-image" id="hiddenImage"></div>
+        </div>
+        <div class="piece-container" id="pieces"></div>
+        <button id="startButton" onclick="initPuzzle()">Commencer</button>
+        <button id="backButton" onclick="goBack()">Retour</button>
+    </div>
+    <button id="homeButton" onclick="goHome()">Accueil</button>
+    <div class="popup" id="popup">
+        <p id="message"></p>
+        <button id="nextPuzzle" onclick="nextPuzzle()">Puzzle suivant</button>
+    </div>
+    <script>
+        let puzzleIndex = 0;
+        const puzzleImages = ["puzzle1.jpg", "puzzle2.jpg", "puzzle3.jpg"];
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
+        function goHome() {
+            window.location.href = 'main.html';
+        }
+
+        function initPuzzle() {
+            const puzzleContainer = document.getElementById("puzzle");
+            const piecesContainer = document.getElementById("pieces");
+            const startButton = document.getElementById("startButton");
+            const backButton = document.getElementById("backButton");
+
+            puzzleContainer.innerHTML = "";
+            piecesContainer.innerHTML = "";
+
+            let hiddenImage = document.getElementById("hiddenImage");
+            if (!hiddenImage) {
+                hiddenImage = document.createElement("div");
+                hiddenImage.id = "hiddenImage";
+                hiddenImage.classList.add("hidden-image");
+                puzzleContainer.appendChild(hiddenImage);
+            }
+
+            hiddenImage.style.display = "none";
+            hiddenImage.style.backgroundImage = `url(${puzzleImages[puzzleIndex]})`;
+
+            startButton.style.display = "none";
+            backButton.style.display = "none";
+
+            let positions = [...Array(16).keys()];
+            positions.sort(() => Math.random() - 0.5);
+
+            for (let i = 0; i < 16; i++) {
+                let slot = document.createElement("div");
+                slot.classList.add("slot");
+                slot.dataset.correctPos = i;
+                slot.addEventListener("dragover", allowDrop);
+                slot.addEventListener("drop", dropPiece);
+                puzzleContainer.appendChild(slot);
+            }
+
+            positions.forEach((pos) => {
+                let piece = document.createElement("div");
+                piece.classList.add("piece");
+                piece.style.backgroundImage = `url(${puzzleImages[puzzleIndex]})`;
+                piece.style.backgroundPosition = `-${(pos % 4) * 75}px -${Math.floor(pos / 4) * 75}px`;
+                piece.draggable = true;
+                piece.dataset.correctPos = pos;
+                piece.addEventListener("dragstart", dragStart);
+                piecesContainer.appendChild(piece);
+                initTouchEvents(piece); 
+            });
+        }
+
+        function dragStart(event) {
+            event.dataTransfer.setData("text", event.target.dataset.correctPos);
+            event.target.classList.add("dragging");
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+
+        function dropPiece(event) {
+    event.preventDefault();
+
+
+    let draggedPiece = document.querySelector(".dragging");
+
+   
+    if (event.target.classList.contains("slot") && !event.target.hasChildNodes()) {
+        event.target.appendChild(draggedPiece);
+        draggedPiece.classList.remove("dragging");
+    }
+
+    checkPuzzle();
+}
+
+function checkPuzzle() {
+    const slots = document.querySelectorAll(".slot");
+    let isSolved = true;
+
+    slots.forEach((slot) => {
+        const piece = slot.querySelector(".piece");
+
+
+        if (!piece || piece.dataset.correctPos != slot.dataset.correctPos) {
+            isSolved = false;
+        }
+    });
+
+    if (isSolved) {
+        setTimeout(() => {
+       
+            document.getElementById("hiddenImage").style.display = "block";
+        }, 0);
+
+        setTimeout(() => {
+
+            const pieces = document.querySelectorAll(".piece");
+            pieces.forEach((piece) => {
+                piece.classList.add("solved"); 
+                piece.style.display = "none"; 
+            });
+
+            const hiddenImage = document.getElementById("hiddenImage");
+            hiddenImage.style.zIndex = 10;
+
+            const popup = document.getElementById("popup");
+            document.getElementById("message").textContent = "Bravo mon cœur, clique sur Puzzle suivant pour compléter le prochain puzzle !";
+            popup.classList.add("show");
+            popup.style.display = "block";
+        }, 3000);
+    }
+}
+
+
+
+
+        function nextPuzzle() {
+            puzzleIndex = (puzzleIndex + 1) % puzzleImages.length;
+            const popup = document.getElementById("popup");
+            popup.classList.remove("show");
+            setTimeout(() => {
+                popup.style.display = "none";
+                initPuzzle();
+            }, 300);
+        }
+
+        function initTouchEvents(piece) {
+            piece.addEventListener("touchstart", (event) => {
+                event.preventDefault();
+
+                const touch = event.touches[0];
+                activePiece = piece;
+
+                offsetX = touch.clientX - piece.getBoundingClientRect().left;
+                offsetY = touch.clientY - piece.getBoundingClientRect().top;
+
+                piece.style.position = "absolute";
+                piece.style.zIndex = "1000";
+                document.body.appendChild(piece);
+            });
+
+            piece.addEventListener("touchmove", (event) => {
+                if (!activePiece) return;
+                event.preventDefault();
+
+                const touch = event.touches[0];
+                activePiece.style.left = touch.clientX - offsetX + "px";
+                activePiece.style.top = touch.clientY - offsetY + "px";
+            });
+
+            piece.addEventListener("touchend", (event) => {
+                if (!activePiece) return;
+
+                const slots = document.querySelectorAll(".slot");
+                let targetSlot = null;
+
+                slots.forEach((slot) => {
+                    const rect = slot.getBoundingClientRect();
+                    const touch = event.changedTouches[0];
+                    if (
+                        touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                        touch.clientY >= rect.top && touch.clientY <= rect.bottom
+                    ) {
+                        targetSlot = slot;
+                    }
+                });
+
+                if (targetSlot && !targetSlot.hasChildNodes()) {
+                    targetSlot.appendChild(activePiece);
+                    activePiece.style.position = "static";
+                    activePiece.style.zIndex = "1";
+
+                    activePiece = null;
+                    checkPuzzle();
+                } else {
+                    activePiece.style.position = "static";
+                    activePiece.style.zIndex = "1";
+                    activePiece = null;
+                }
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const pieces = document.querySelectorAll(".piece");
+            pieces.forEach(initTouchEvents);
+        });
+    </script>
+</body>
+</html>
