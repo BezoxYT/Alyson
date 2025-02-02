@@ -1,13 +1,17 @@
+@font-face {
+    font-family: 'Wasted Vindey';
+    src: url('Wasted-Vindey.ttf') format('truetype');
+}
+
 body {
-    font-family: 'Arial, sans-serif';
+    font-family: 'Wasted Vindey', serif;
     background-color: #ffe6e6;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
-    overflow: auto; /* Changez overflow: hidden en overflow: auto */
-    padding-top: 20px; /* Ajoutez un padding en haut pour éviter que le contenu soit coupé */
+    overflow: auto;
+    padding-top: 20px; 
 }
 
 .container {
@@ -19,23 +23,26 @@ body {
     width: 93%;
     position: relative;
     z-index: 1;
-    max-width: 600px; /* Ajoutez cette ligne */
-    box-sizing: border-box; /* Ajoutez cette ligne */
+    max-width: 600px;
+    box-sizing: border-box;
 }
 
-
-
+h1, p, button, .call-hours, .heart-icon, .answer-box, .letter-choices, .letterBlock, .slot {
+    font-family: 'Wasted Vindey', serif; /* Changez la police ici */
+}
 
 h1 {
     color: #ff4d4d;
-    font-size: 28px;
+    font-size: 38px;
     margin-bottom: 20px;
 }
 
 p {
-    font-size: 18px;
+    font-size: 20px;
     color: #333;
     margin-bottom: 20px;
+    font-family: 'Simple Planner', sans-serif !important;
+    font-weight: 300;
 }
 
 .call-hours {
@@ -155,10 +162,238 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
-    font-weight: bold;
     cursor: pointer;
+    margin: 0 ;
 }
 
+.stat {
+    margin: 20px 0;
+    font-family: 'Wasted Vindey', serif;
+}
 
+.stat-value {
+    font-size: 60px;
+    font-weight: bold;
+    color: #ff4d4d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Simple Planner', sans-serif;
+}
 
+.stat-value span {
+    margin: 0 10px;
+    padding: 15px 25px;
+    background-color: #ff4d4d;
+    color: white;
+    border-radius: 10px;
+    font-size: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-label {
+    font-size: 20px;
+    color: #ff4d4d;
+    margin-top: 15px;
+    font-family: 'Wasted Vindey', serif;
+}
+
+  
+#homeButton {
+    position: fixed;
+    padding: 5px 11px;
+    z-index: 10;
+    left: 31px;
+    top: 1px;
+}
+.container-puzzle {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 79%;
+    position: relative;
+    z-index: 1;
+}
+.puzzle-container {
+    display: grid;
+    grid-template-columns: repeat(4, 75px);
+    grid-template-rows: repeat(4, 75px);
+    gap: 2px;
+    margin: auto;
+    width: 308px;
+    height: 308px;
+    position: relative;
+    border: 2px solid black;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    font-family: 'Wasted Vindey', serif;
+}
+.piece-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 237px;
+    margin: 20px auto;
+    border: 2px solid black;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Wasted Vindey', serif;
+}
+.piece {
+    width: 75px;
+    height: 75px;
+    background-size: 300px 300px;
+    cursor: grab;
+    margin: 2px;
+    font-family: 'Wasted Vindey', serif;
+}
+.slot-puzzle {
+    width: 75px;
+    height: 75px;
+    border: 1px dashed black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Wasted Vindey', serif;
+}
+.hidden-image {
+    display: none;
+    width: 308px;
+    height: 308px;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: 'Wasted Vindey', serif;
+}
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 20;
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    font-family: 'Wasted Vindey', serif;
+}
+.popup.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+.popup p {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+.popup button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: #ff4081;
+    color: white;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+    font-family: 'Wasted Vindey', serif;
+}
+.popup button:hover {
+    background: #e91e63;
+}
+.solved {
+    visibility: hidden;
+}
+.hidden-image {
+    z-index: 20; 
+}
+#message-title {
+    color: #ff4081;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+#message {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.book {
+    position: relative;
+    width: 360px;
+    height: 500px;
+    perspective: 1500px;
+    margin-top: -100px;
+    font-family: 'Wasted Vindey', serif;
+
+}
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 20px;
+    backface-visibility: hidden;
+    transition: transform 1s, z-index 1s;
+    transform-origin: left;
+    font-family: 'Wasted Vindey', serif;
+}
+.cover {
+    background: #c39b77;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+    font-family: 'Wasted Vindey', serif;
+}
+.turn {
+    transform: rotateY(-180deg);
+}
+.content {
+    padding: 20px;
+    font-family: 'Wasted Vindey', serif;
+}
+.next-btn, .prev-btn {
+    position: absolute;
+    bottom: 10px;
+    background: #c39b77;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    font-family: 'Wasted Vindey', serif;
+}
+.next-btn { right: 20px; }
+.prev-btn { left: 20px; }
+
+.home-btn {
+position: absolute;
+bottom: 10px;
+left: 50%;
+transform: translateX(-50%);
+background: #c39b77;
+border: none;
+padding: 5px 10px;
+cursor: pointer;
+color: white;
+font-weight: bold;
+border-radius: 5px;
+font-family: 'Wasted Vindey', serif;
+}
+.content p {
+font-family: 'Simple Planner', sans-serif;
+
+}
