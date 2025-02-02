@@ -176,13 +176,14 @@
             });
 
             piece.addEventListener("touchmove", (event) => {
-                if (!activePiece) return;
-                event.preventDefault();
+    if (!activePiece) return;
+    event.preventDefault();
 
-                const touch = event.touches[0];
-                activePiece.style.left = touch.clientX - offsetX + "px";
-                activePiece.style.top = touch.clientY - offsetY + "px";
-            });
+    const touch = event.touches[0];
+    activePiece.style.left = touch.clientX - offsetX + "px";
+    activePiece.style.top = touch.clientY - offsetY + window.scrollY + "px";  // Ajout de window.scrollY
+});
+
 
             piece.addEventListener("touchend", (event) => {
                 if (!activePiece) return;
