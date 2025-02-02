@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrases à Compléter ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .phrase {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .phrase p {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .phrase input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            border: 2px solid #ff9999;
+            border-radius: 5px;
+            display: none;
+        }
+        .phrase span {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ffcccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .save-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ffcccc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phrases à Compléter ❤️</h1>
+        <p class="message">Complète les phrases suivantes :</p>
+        <div id="phrasesContainer">
+            <!-- Les phrases à compléter seront insérées ici -->
+        </div>
+        <button onclick="goBack()">Retour</button>
+        <button class="save-button" onclick="saveResponses()">Enregistrer les Réponses</button>
+    </div>
+
+    <script>
+        const phrases = [
+            "Ce que j’aime chez toi, c’est...",
+            "Quand je pense à nous, je vois...",
+            "Mon souvenir préféré avec toi est...",
+            "Ce que tu fais qui me rend heureux(se), c’est...",
+            "La première chose que j’ai remarquée chez toi, c’était...",
+            "Ce que j’admire le plus chez toi, c’est...",
+            "Quand je suis avec toi, je me sens...",
+            "Ce que j’aimerais faire avec toi, c’est...",
+            "La chose la plus drôle que nous ayons faite ensemble est...",
+            "Ce que je ressens quand je te vois sourire, c’est...",
+            "La chose que je préfère chez toi, c’est...",
+            "Quand je pense à notre avenir, je vois...",
+            "Ce que j’aime le plus dans notre relation, c’est...",
+            "La chose la plus romantique que tu aies faite pour moi est...",
+            "Ce que je ressens quand tu me prends dans tes bras, c’est...",
+            "La première fois que je t’ai vu(e), j’ai pensé...",
+            "Ce que j’aimerais te dire plus souvent, c’est...",
+            "Quand je pense à toi, je me sens...",
+            "Ce que j’aime faire avec toi, c’est...",
+            "La chose que je trouve la plus mignonne chez toi, c’est...",
+            "Quand je pense à notre histoire, je me dis...",
+            "Ce que j’aime le plus dans ton caractère, c’est...",
+            "La chose qui me manque le plus quand tu n’es pas là, c’est...",
+            "Ce que j’aimerais que tu saches, c’est...",
+            "La chose qui me fait le plus rire chez toi, c’est...",
+            "Quand je pense à toi, je pense à..."
+
+            
+        ];
+
+        function showPhrases() {
+            const phrasesContainer = document.getElementById('phrasesContainer');
+            phrasesContainer.innerHTML = '';
+
+            const savedResponses = JSON.parse(localStorage.getItem('responses')) || [];
+
+            phrases.forEach((phrase, index) => {
+                const phraseElement = document.createElement('div');
+                phraseElement.classList.add('phrase');
+
+                const phraseText = document.createElement('p');
+                phraseText.textContent = phrase;
+                phraseElement.appendChild(phraseText);
+
+                const savedResponse = savedResponses[index];
+                const responseDisplay = document.createElement('span');
+                responseDisplay.textContent = savedResponse ? savedResponse : "Clique pour ajouter une réponse...";
+                responseDisplay.onclick = () => editResponse(index, responseDisplay);
+                phraseElement.appendChild(responseDisplay);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `response-${index}`;
+                input.value = savedResponse || '';
+                input.onblur = () => saveIndividualResponse(index, input.value);
+                phraseElement.appendChild(input);
+
+                phrasesContainer.appendChild(phraseElement);
+            });
+        }
+
+        function editResponse(index, responseDisplay) {
+            const input = document.getElementById(`response-${index}`);
+            input.style.display = 'inline-block';
+            responseDisplay.style.display = 'none';
+            input.focus();
+        }
+
+        function saveIndividualResponse(index, value) {
+            const responses = JSON.parse(localStorage.getItem('responses')) || [];
+            responses[index] = value;
+            localStorage.setItem('responses', JSON.stringify(responses));
+            showPhrases();
+        }
+
+        function saveResponses() {
+            const responses = phrases.map((_, index) => {
+                const input = document.getElementById(`response-${index}`);
+                return input ? input.value : '';
+            });
+
+            localStorage.setItem('responses', JSON.stringify(responses));
+            alert('Réponses enregistrées avec succès!');
+        }
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+        window.onload = showPhrases;
+    </script>
+</body>
+</html>

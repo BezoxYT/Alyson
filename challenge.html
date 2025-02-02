@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine à Destinée ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            height: 100vh;
+        }
+    </style>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#ffe6e6">
+    <link rel="shortcut icon" href="favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffe6e6">
+    <meta name="theme-color" content="#ffe6e6">
+</head>
+<body>
+    <div class="container">
+        <h1>Machine à Destinée ❤️</h1>
+        <p class="message" id="fortuneMessage">Clique sur le bouton pour découvrir ta prédiction</p>
+        <button onclick="generateFortune()">Découvrir</button>
+        <button onclick="goBack()">Retour</button>
+    </div>
+
+    <script>
+        const fortunes = [
+            "Un geste inattendu te remplira de bonheur aujourd'hui.",
+            "Une douce surprise t'attend dans les prochains jours.",
+            "L'amour que tu ressens sera magnifié par un geste spécial.",
+            "Un instant magique entre toi et ton amour va adoucir ta journée.",
+            "Une journée ordinaire se transformera en un souvenir inoubliable.",
+            "Ton cœur s'emballera pour une personne que tu n'attendais pas.",
+            "Un amour silencieux mais puissant se renforcera entre vous.",
+            "Une rencontre te donnera l'impression d'avoir trouvé ton âme sœur.",
+            "Un après-midi calme se transformera en un moment de complicité parfaite.",
+            "Des éclats de rire se mêleront à une complicité surprenante.",
+            "Un petit cadeau symbolique te rappellera combien vous vous aimez.",
+            "Un fou rire partagé va effacer toutes tes préoccupations.",
+            "Une simple promenade te rappellera combien tu tiens à l’autre.",
+            "Ton regard croisé avec celui de l’autre te fera ressentir des frissons.",
+            "Un simple baiser dans le vent te laissera un goût d’éternité.",
+            "La douceur de sa voix te calmera après une longue journée.",
+            "Ton amour va te surprendre par un geste inattendu et adoré.",
+            "Un rire partagé transformera ta journée en une aventure magique.",
+            "Un contact furtif te fera ressentir une connexion profonde et douce.",
+            "Une déclaration d’amour sincère t’éblouira par sa simplicité.",
+            "Une tendresse partagée se changera en une complicité renforcée.",
+            "Un câlin tout simple se transformera en un moment d’intimité parfaite.",
+            "Des paroles qui réchauffent le cœur te parviendront ce soir.",
+            "Un regard échangé en silence sera plus puissant que des mots.",
+            "Une lettre d’amour écrite à la main te comblera de bonheur.",
+            "Un baiser partagé sous la pluie te remplira de plaisir et de chaleur.",
+            "Une complicité naissante se fera sentir dès le premier sourire.",
+            "Ton amour te guidera vers un endroit spécial que vous découvrirez ensemble.",
+            "Une soirée tranquille sera marquée par des gestes tendres et remplis de douceur.",
+            "Un simple souffle à l’oreille te rappellera combien vous êtes connectés.",
+            "La chaleur de ses bras te fera oublier tout le reste du monde.",
+            "Un contact léger deviendra une explosion de désir refoulé.",
+            "Un silence partagé sera plus profond qu’un long discours.",
+            "Ton amour t’emmènera dans un endroit secret, où vous serez seuls au monde.",
+            "Une soirée tranquille se finira en une aventure sensorielle inoubliable.",
+            "Un baiser doux, volé au moment idéal, te rappellera combien il/elle tient à toi.",
+            "Un moment de tranquillité se changera en une explosion de bonheur partagé.",
+            "Une douce mélodie te rappellera la beauté de chaque instant passé ensemble.",
+            "Un simple sourire de son côté te réchauffera tout le cœur.",
+            "Un geste quotidien te montrera que l’amour se trouve dans les petites choses.",
+            "Un tendre câlin de son côté effacera toute tension et toute inquiétude.",
+            "Un regard tout en douceur te fera comprendre qu’il/elle pense à toi.",
+            "Une surprise romantique t’attend pour faire fondre ton cœur.",
+            "Un petit moment volé pour être seuls te donnera l'impression d’être dans un autre monde.",
+            "Les gestes simples te rappelleront combien il/elle est essentiel(le) à ta vie.",
+            "Une attention particulière aujourd'hui renforcera vos sentiments réciproques.",
+            "Sous les étoiles, tu vivras un moment d’éternité avec ton amour.",
+            "Une promesse murmurée à l'oreille changera toute la journée.",
+            "Un petit geste, un simple regard suffira à te faire fondre de plaisir.",
+            "Un souvenir d’enfance te fera sourire et t’éloignera des préoccupations.",
+            "Un petit mot doux, glissé dans ta poche, te réchauffera le cœur.",
+            "Une surprise en soirée illuminera ton visage d’un sourire radieux.",
+            "Un soupir partagé, un geste furtif, et tu sauras que vous êtes faits l'un pour l'autre.",
+            "Un baiser dans le cou te rappellera qu'il/elle ne t'a jamais oublié(e).",
+            "Une déclaration d’amour sous les étoiles te fera vibrer comme jamais.",
+            "Un moment calme entre vous deux se transformera en un instant magique.",
+            "Un baiser doux effleurera ta peau, éveillant des sensations oubliées.",
+        "La chaleur de son souffle sur ta nuque te fera frissonner de désir.",
+        "Ses mains caresseront doucement ta peau, éveillant des feux inattendus.",
+        "Un frisson parcourra ton corps à chaque effleurement de ses doigts.",
+        "Ses lèvres, tout juste effleurant ta peau, te rempliront de plaisir silencieux.",
+        "Dans l'intimité de vos regards, des promesses silencieuses se tissent.",
+        "La douceur de sa peau contre la tienne te rappellera l’intensité du désir.",
+        "Un baiser effleura ta bouche, à peine perceptible, mais suffisant pour faire fondre ton cœur.",
+        "Chaque caresse devient une invitation à un plaisir subtil et envoûtant.",
+        "Sous le voile de la nuit, une simple touche de sa main te fera oublier le monde.",
+        "Les souffles entrecoupés, chaque geste semble être une danse sensuelle.",
+        "Un regard profond, chargé de promesses, te fera perdre toute notion du temps.",
+        "L'intensité de son étreinte te rappellera la force de son désir.",
+        "Ses gestes lents, pleins de tendresse et de sensualité, éveilleront en toi un besoin irrésistible.",
+        "Sous la lumière tamisée, ses baisers te feront frissonner de plaisir pur.",
+        "Chaque murmure dans ton oreille te fera perdre le contrôle de tes pensées.",
+        "Un baiser enflammé te rappellera que le désir peut être aussi doux qu'une brise.",
+        "Ses mains glisseront lentement le long de ton corps, éveillant des désirs secrets.",
+        "Les gestes tendres se feront plus pressants, créant un moment d’extase partagée.",
+        "La chaleur de son corps contre le tien te rappellera que l’attente rend tout plus délicieux.",
+        "Un simple frôlement de ses lèvres sur ton cou t’envoûtera et te transportera.",
+        "Sous la caresse de ses doigts, tu ressentiras une connexion profonde et intense.",
+        "Chaque mouvement de son corps te fera réagir, comme si chaque partie de toi l'appelait.",
+        "Un baiser léger mais insistant te fera sentir toute la force de son désir.",
+        "Une soirée calme se changera en une étreinte pleine de passion et de tendresse.",
+        "Les murmures doux se mêleront aux frissons, en une danse silencieuse et sensuelle.",
+        "Ton corps réagira à chaque effleurement de sa peau, perdu dans une brume de désir.",
+        "Dans la chaleur de la nuit, ton cœur battra plus fort à chaque geste intime.",
+        "Un souffle lourd, un regard intense, et tu sauras que l'instant est venu.",
+        "Chaque effleurement de ses lèvres sur ton corps te fera perdre tous tes repères.",
+        "Ses mains sur ta peau, lentes et sensuelles, te donneront l’impression de fondre.",
+        "Sous la douceur de ses baisers, tu te sentiras en totale harmonie avec ton amour.",
+        "Un frisson parcourra ton corps à chaque mouvement délicat de ses doigts.",
+        "Les gestes tendres se changeront en une passion incontrolable, créant une magie invisible.","Un grand changement se prépare dans ta vie, et il sera rempli de joie et de complicité.",
+"Tu te rapprocheras d'un projet qui te tiendra particulièrement à cœur dans les prochains mois.",
+"Les étoiles sont alignées pour t’offrir un futur radieux, avec des moments inoubliables.",
+"Un engagement à vie pourrait se profiler à l’horizon, avec quelqu’un de spécial à tes côtés.",
+"Des petits pieds courront bientôt dans ta maison, apportant bonheur et rires à chaque instant.",
+"Une belle aventure en famille te verra épanoui(e), pleine de bonheur et de souvenirs précieux.",
+"Un mariage sous les étoiles t’attend, marqué par des promesses d’amour éternel.",
+"Ton futur est marqué par un grand événement qui scellera l’union de deux âmes.",
+"Des petits moments simples en famille feront de toi la personne la plus heureuse du monde.",
+"Une nouvelle vie commence avec la naissance d’un petit être, créant un lien indestructible.",
+"Un beau voyage te mènera à des souvenirs impérissables, à partager avec ton amour.",
+"Les enfants qui rempliront ta maison apporteront amour et légèreté à chaque instant.",
+"Tu es sur le point de vivre un futur plus lumineux, construit à deux, main dans la main.",
+"Un mariage sous les cieux d’un endroit magique sera un moment que tu n’oublieras jamais.",
+"Ton amour se transformera en famille, avec des moments d’une douceur infinie.",
+"Une maison pleine de rires, de jeux et de tendresse deviendra ton futur idéal.",
+"Tu as devant toi une vie pleine de promesses, d’aventures et de moments de pure complicité.",
+"Le futur te réserve de belles surprises, avec un avenir que tu as toujours imaginé.",
+"Ton futur se construira autour de l’amour, de l’harmonie et de la famille que vous formerez.",
+"Un mariage simple mais magique marquera le début d’une nouvelle étape de ta vie.",
+"Les enfants apporteront une douce folie à ton quotidien, t’offrant une nouvelle perspective.",
+"Ton cœur se remplira d’amour pour une famille grandissante, et chaque instant sera une bénédiction.",
+"Les prochaines années seront marquées par un bonheur familial profond, sans cesse renouvelé.",
+"Un avenir partagé avec l’amour de ta vie te donnera une vie riche de sens et de bonheur."
+
+    ];
+
+    
+    
+
+
+        function generateFortune() {
+            const messageElement = document.getElementById('fortuneMessage');
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            messageElement.textContent = fortunes[randomIndex];
+            for (let i = 0; i < 5; i++) { // Créez plus de cœurs
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>

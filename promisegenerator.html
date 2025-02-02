@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur de Promesses ❤️</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body{
+            height: 100vh;
+        }
+       
+        .promise {
+            margin: 20px 0;
+        }
+        .generate-button, .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ffcccc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Générateur de Promesses ❤️</h1>
+        <p id="promiseContainer" class="promise">
+            Clique sur le bouton pour générer une promesse
+        </p>
+        <button class="generate-button" onclick="generatePromise()">Générer une Promesse</button>
+        <button class="back-button" onclick="goBack()">Retour</button>
+    </div>
+
+    <script>
+        const promises = [
+            "Je promets de toujours te soutenir.",
+            "Je promets de te faire sourire chaque jour.",
+            "Je promets de t'écouter attentivement.",
+            "Je promets de te respecter et de t'aimer.",
+            "Je promets de partager mes rêves avec toi.",
+            "Je promets de te protéger.",
+            "Je promets de te surprendre avec des petites attentions.",
+            "Je promets de te faire des câlins tous les jours.",
+            "Je promets de te dire 'je t'aime' chaque jour.",
+            "Je promets de te faire rire même dans les moments difficiles.",
+            "Je promets de te faire confiance.",
+            "Je promets de te faire des compliments.",
+            "Je promets de te faire des surprises.",
+            "Je promets de t'accompagner dans tes projets.",
+            "Je promets de te respecter.",
+            "Je promets de te soutenir dans les moments difficiles.",
+            "Je promets de te faire des bisous.",
+            "Je promets de te faire des massages.",
+            "Je promets de te faire des cadeaux.",
+            "Je promets de te faire des déclarations d'amour.",
+            "Je promets de te faire des repas romantiques.",
+            "Je promets de te laisser tranquille quand tu en as besoin.",
+            "Je promets de te protéger dans toutes les situations.",
+            "Je promets de toujours te dire la vérité.",
+            "Je promets de t'encourager dans tout ce que tu fais.",
+            "Je promets de t'accepter tel que tu es.",
+            "Je promets de te montrer tous les jours combien je t'aime.",
+            "Je promets de te soutenir dans tes rêves et aspirations.",
+            "Je promets de te rendre heureux(se) à chaque instant.",
+            "Je promets de te rappeler combien tu es exceptionnel(le).",
+            "Je promets de faire de toi ma priorité.",
+            "Je promets de te respecter en toutes circonstances.",
+            "Je promets de t'aimer sans condition.",
+            "Je promets de rendre chaque jour magique à tes côtés.",
+            "Je promets de rester patient(e) quand tu en as besoin.",
+            "Je promets de te partager mes plus belles aventures.",
+            "Je promets de te donner toute mon attention.",
+            "Je promets de te faire découvrir de nouvelles passions.",
+            "Je promets de t'accompagner dans tous tes projets de vie.",
+            "Je promets de toujours garder le sourire quand je suis avec toi.",
+            "Je promets de rendre ton quotidien plus beau chaque jour.",
+            "Je promets de te faire des surprises et des moments inoubliables.",
+            "Je promets de t'embrasser chaque fois que tu en as besoin.",
+            "Je promets de toujours te rendre heureux(se) avec de petites attentions.",
+            "Je promets de ne jamais te laisser tomber.",
+            "Je promets de me rappeler de chaque détail de nos moments ensemble.",
+            "Je promets de faire de ma vie un endroit agréable pour toi.",
+            "Je promets de te soutenir dans tous les hauts et les bas de la vie.",
+            "Je promets de te faire sentir spécial(e) tous les jours.",
+            "Je promets de garder notre complicité intacte.",
+            "Je promets de faire de chaque jour un jour spécial à tes côtés.",
+            "Je promets de faire tout ce qui est en mon pouvoir pour te rendre heureux(se).",
+            "Je promets de te surprendre de mille manières.",
+            "Je promets de te guider à travers les défis de la vie.",
+            "Je promets de toujours trouver des moyens de te rendre fièr(e) de moi.",
+            "Je promets de ne jamais te laisser te sentir seul(e).",
+            "Je promets de te soutenir, peu importe la situation.",
+            "Je promets de faire de toi ma priorité, toujours.",
+            "Je promets de ne jamais laisser la distance nous séparer.",
+            "Je promets de te réconforter chaque fois que tu as besoin de soutien.",
+            "Je promets de toujours te voir comme la personne la plus importante dans ma vie.",
+            "Je promets de célébrer chaque petite victoire avec toi.",
+            "Je promets de t'aimer même dans les moments de silence.",
+            "Je promets de te respecter à chaque étape de notre vie.",
+            "Je promets de toujours garder notre amour intact, peu importe les années.",
+            "Je promets de t'offrir des moments de tranquillité quand tu en as besoin.",
+            "Je promets de chérir chaque instant passé à tes côtés.",
+            "Je promets de te faire sentir aimé(e) chaque jour.",
+            "Je promets de te donner tout l'amour que tu mérites.",
+            "Je promets de te montrer combien tu es important(e) pour moi."
+
+        ];
+
+        function generatePromise() {
+            const promiseContainer = document.getElementById('promiseContainer');
+            const randomIndex = Math.floor(Math.random() * promises.length);
+            promiseContainer.textContent = promises[randomIndex];
+            for (let i = 0; i < 5; i++) { // Créez plus de cœurs
+                createHeart();
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>
