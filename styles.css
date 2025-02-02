@@ -397,3 +397,31 @@ font-family: 'Wasted Vindey', serif;
 font-family: 'Simple Planner', sans-serif;
 
 }
+
+.music-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 93%;
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.music-item {
+    margin: 20px 0;
+}
+
+.music-item h2 {
+    font-size: 24px;
+    color: #ff4d4d;
+    margin-bottom: 10px;
+}
+
+.music-item audio {
+    width: 100%;
+    outline: none;
+}
