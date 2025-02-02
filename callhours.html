@@ -20,13 +20,18 @@
             background-color: #fff;
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            width: 90%;
+            width: 68%;
             max-width: 500px;
             z-index: 1;
             position: relative; 
-            margin-top: 460px; 
+            padding: 40px;
+            margin-top: 75px;
+            padding-top: 10px;
             padding-bottom: 20px;
-            margin-bottom: 50px;
+            margin-bottom: 10px;
+            max-height: 100%;
+            min-height: 900px;
+            overflow: auto;
         }
 
         h1 {
@@ -72,7 +77,7 @@
             background-color: #ff4d4d;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 17px;
             transition: background-color 0.3s ease;
         }
 
@@ -101,8 +106,8 @@
         </div>
 
         <div class="stat">
-            <div class="stat-value"><span id="messages">200</span></div>
-            <div class="stat-label">fois où j'ai relu tes messages</div>
+            <div class="stat-value"><span id="messages">300</span></div>
+            <div class="stat-label">fois où j'ai souri en lisant tes messages</div>
         </div>
 
         <div class="stat">
@@ -116,9 +121,46 @@
         </div>
 
         <div class="stat">
-            <div class="stat-value"><span>∞</span></div>
+            <div class="stat-value"><span id="hugs">1000</span></div>
+            <div class="stat-label">câlins que je rêve de te faire</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-value"><span id="laughs">500</span></div>
+            <div class="stat-label">fois où tu as fait battre mon cœur plus fort</div>
+        </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="perfect">∞</span></div>
             <div class="stat-label">fois où je me suis dit "elle est parfaite"</div>
         </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="butterflies">700</span></div>
+            <div class="stat-label">fois où tu m'as donné des papillons dans le ventre</div>
+        </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="dreams">250</span></div>
+            <div class="stat-label">rêves où tu étais à mes côtés</div>
+        </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="smiles">600</span></div>
+            <div class="stat-label">sourires causés par toi</div>
+        </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="texts">400</span></div>
+            <div class="stat-label">messages relus juste pour ressentir ta présence</div>
+        </div>
+        
+        <div class="stat">
+            <div class="stat-value"><span id="kisses">800</span></div>
+            <div class="stat-label">baisers que je rêve de te donner</div>
+        </div>
+        
+        
         
         <button onclick="goBack()">Retour</button>
     </div>
@@ -138,14 +180,21 @@
         }
 
         function countStats() {
-            // countIncremental("hours", 100, 15000); // Ne doit pas incrémenter
-            countIncremental("messages", 200, 43200000); // Incrémenter 1 ou 2 fois par jour (12 heures)
-            countIncremental("futures", 100, 4320000); // Incrémenter 20 fois par jour (2 heures)
-            countIncremental("loveConfessions", 300, 3000); // Aller un peu plus vite
+            countIncremental("messages", 300, 43200000);
+            countIncremental("futures", 100, 4320000);
+            countIncremental("loveConfessions", 300, 3000);
+            countIncremental("hugs", 1000, 6000);
+            countIncremental("laughs", 500, 7000);
+            countIncremental("butterflies", 700, 5000);
+            countIncremental("dreams", 250, 8000);
+            countIncremental("smiles", 600, 6000);
+            countIncremental("texts", 400, 10000);
+            countIncremental("kisses", 800, 5000);
+            countIncremental("perfect", 700, 1000);
         }
 
         function countThoughts() {
-            countIncremental("thoughts", 500, 100); // Aller beaucoup plus vite
+            countIncremental("thoughts", 500, 100);
         }
 
         function goBack() {
@@ -153,7 +202,7 @@
         }
 
         function loadInitialValues() {
-            const ids = ["hours", "thoughts", "messages", "futures", "loveConfessions"];
+            const ids = ["hours", "thoughts", "messages", "futures", "loveConfessions", "hugs", "laughs", "butterflies", "dreams", "smiles", "texts", "kisses", "perfect"];
             ids.forEach(id => {
                 const element = document.getElementById(id);
                 const value = localStorage.getItem(id) || element.textContent;

@@ -11,104 +11,64 @@
         <h1>Jeu de Lettres</h1>
         <p>Reconstituez le mot.</p>
         
-        <div id="answerBox" class="answer-box">
-            <!-- Zone de réponse sans espaces -->
-        </div>
-        
-        <div id="letterChoices" class="letter-choices">
-            <!-- Lettres disponibles sans espace -->
-        </div>
+        <div id="answerBox" class="answer-box"></div>
+        <div id="letterChoices" class="letter-choices"></div>
         
         <button onclick="checkAnswer()">Vérifier</button>
+        <button onclick="giveHint()">Indice</button>
         <button onclick="goBack()">Retour</button>
     </div>
     
     <script>
         const words = [
-            "je t'aime",
-            "je t'adore",
-            "sexe",
-            "plaisir",
-            "désir",
-            "sentiments",
-            "attirance",
-            "embrasser",
-            "câlin",
-            "marier",
-            "fiançailles",
-            "amoureux",
-            "mariage",
-            "famille",
-            "enfants",
-            "bébé",
-            "naissance",
-            "couple",
-            "relation",
-            "bisous",
-            "amour",
-            "coeur",
-            "bonheur",
-            "sourire",
-            "complicité",
-            "tendresse",
-            "douceur",
-            "passion",
-            "sérénité",
-            "plénitude",
-            "harmonie",
-            "éternité"            
-
+            "je t'aime", "je t'adore", "sexe", "plaisir", "désir", "sentiments",
+            "attirance", "embrasser", "câlin", "marier", "fiançailles", "amoureux",
+            "mariage", "famille", "enfants", "bébé", "naissance", "couple",
+            "relation", "bisous", "amour", "coeur", "bonheur", "sourire",
+            "complicité", "tendresse", "douceur", "passion", "sérénité",
+            "plénitude", "harmonie", "éternité"
         ];
-        let currentWord = words[0];  // Le mot à deviner
-        let currentLevel = 0;  // Niveau actuel
+        let currentLevel = localStorage.getItem('currentLevel') ? parseInt(localStorage.getItem('currentLevel')) : 0;
+        let currentWord = words[currentLevel];
 
-       // Charger un niveau
-function loadLevel() {
-    let savedLevel = localStorage.getItem('currentLevel');
-    currentLevel = savedLevel ? parseInt(savedLevel) : 0;  // Récupère le niveau sauvegardé
-    currentWord = words[currentLevel];
-    createAnswerBox();
-    createLetterChoices();
-}
+        function loadLevel() {
+            currentWord = words[currentLevel];
+            createAnswerBox();
+            createLetterChoices();
+        }
 
-// Vérifier la réponse sans tenir compte des espaces
-function checkAnswer() {
-    const answerBox = document.getElementById('answerBox');
-    const currentAnswer = Array.from(answerBox.children).map(slot => slot.innerText).join('').replace(/\s+/g, '');
+        function checkAnswer() {
+            const answerBox = document.getElementById('answerBox');
+            const currentAnswer = Array.from(answerBox.children).map(slot => slot.innerText).join('').replace(/\s+/g, '');
 
-    if (currentAnswer === currentWord.replace(/\s+/g, '')) {
-        setTimeout(() => {
-            alert("Bravo mon cœur ! Tu as trouvé ❤️");
-            currentLevel++;
-            localStorage.setItem('currentLevel', currentLevel);  // Sauvegarde du niveau
-
-            if (currentLevel < words.length) {
-                loadLevel();
+            if (currentAnswer === currentWord.replace(/\s+/g, '')) {
+                setTimeout(() => {
+                    alert("Bravo mon cœur ! Tu as trouvé ❤️");
+                    currentLevel++;
+                    localStorage.setItem('currentLevel', currentLevel);
+                    if (currentLevel < words.length) {
+                        loadLevel();
+                    } else {
+                        alert("Félicitations princesse, tu as terminé le jeu !");
+                        localStorage.removeItem('currentLevel');
+                    }
+                }, 500);
             } else {
-                alert("Félicitations princesse, tu as terminé le jeu !");
-                localStorage.removeItem('currentLevel'); // Réinitialiser si le jeu est fini
+                alert("Tes trop nulle gros caca");
             }
-        }, 500);
-    } else {
-        alert("Tes trop nulle gros caca");
-    }
-}
+        }
 
-        // Créer la zone de réponse sans espaces
         function createAnswerBox() {
             const answerBox = document.getElementById('answerBox');
-            answerBox.innerHTML = '';  // Réinitialise la zone de réponse
-            
-            // Crée des cases pour chaque lettre sans inclure l'espace
+            answerBox.innerHTML = '';
             currentWord.replace(/\s+/g, '').split('').forEach(() => {
                 const slot = document.createElement('div');
                 slot.classList.add('slot');
-                slot.onclick = () => handleSlotClick(slot); // Permet de retirer une lettre en cliquant sur un slot
+                slot.onclick = () => handleSlotClick(slot);
                 answerBox.appendChild(slot);
             });
         }
 
-        // Mélanger un tableau (fonction de mélange de Fisher-Yates)
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -116,15 +76,11 @@ function checkAnswer() {
             }
         }
 
-        // Créer les lettres disponibles sans l'espace, avec un mélange
         function createLetterChoices() {
             const letterChoices = document.getElementById('letterChoices');
-            letterChoices.innerHTML = ''; // Réinitialise les choix de lettres
-
-            // Crée des blocs de lettres sans espace
+            letterChoices.innerHTML = '';
             const lettersToChoose = currentWord.replace(/\s+/g, '').split('');
-            shuffleArray(lettersToChoose);  // Mélange les lettres
-
+            shuffleArray(lettersToChoose);
             lettersToChoose.forEach(letter => {
                 const letterBlock = document.createElement('div');
                 letterBlock.classList.add('letterBlock');
@@ -134,22 +90,17 @@ function checkAnswer() {
             });
         }
 
-        // Gérer le clic sur une lettre
         function handleLetterClick(letterBlock) {
-            const answerBox = document.getElementById('answerBox');
-            const slots = answerBox.children;
-
-            // Trouver la première case vide
-            for (let i = 0; i < slots.length; i++) {
-                if (slots[i].innerText === '') {
-                    slots[i].innerText = letterBlock.textContent;
-                    letterBlock.style.display = 'none';  // Cache la lettre sélectionnée
+            const slots = document.getElementById('answerBox').children;
+            for (let slot of slots) {
+                if (slot.innerText === '') {
+                    slot.innerText = letterBlock.textContent;
+                    letterBlock.style.display = 'none';
                     break;
                 }
             }
         }
 
-        // Permet de retirer une lettre en cliquant sur une case de la zone de réponse
         function handleSlotClick(slot) {
             if (slot.innerText !== '') {
                 const letterChoices = document.getElementById('letterChoices');
@@ -158,72 +109,44 @@ function checkAnswer() {
                 letterBlock.textContent = slot.innerText;
                 letterBlock.onclick = () => handleLetterClick(letterBlock);
                 letterChoices.appendChild(letterBlock);
-                slot.innerText = '';  // Vide la case
+                slot.innerText = '';
             }
         }
 
+        function giveHint() {
+            const slots = document.getElementById('answerBox').children;
+            const letters = currentWord.replace(/\s+/g, '').split('');
+            for (let i = 0; i < slots.length; i++) {
+                if (slots[i].innerText === '') {
+                    slots[i].innerText = letters[i];
+                    hideUsedLetter(letters[i]);
+                    break;
+                }
+            }
+        }
 
-        // Retourner à la page précédente (exemple)
+        function hideUsedLetter(letter) {
+            const letterChoices = document.getElementById('letterChoices').children;
+            for (let block of letterChoices) {
+                if (block.textContent === letter && block.style.display !== 'none') {
+                    block.style.display = 'none';
+                    break;
+                }
+            }
+        }
+
         function goBack() {
             window.location.href = 'main.html';
         }
 
-        // Charger le premier niveau au démarrage
         loadLevel();
     </script>
-
+    
     <style>
-        .container {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .answer-box {
-            display: flex;
-            justify-content: center;
-            gap: 1px;
-            margin: 20px -15px;
-        }
-
-        .slot {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            text-align: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .letter-choices {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .letterBlock {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 10px;
-        }
+        .container { text-align: center; margin-top: 50px; }
+        .answer-box, .letter-choices { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        .slot, .letterBlock { width: 40px; height: 40px; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; cursor: pointer; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; margin: 10px; }
     </style>
 </body>
 </html>

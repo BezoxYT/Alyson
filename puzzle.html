@@ -122,6 +122,17 @@
     z-index: 20; 
 }
 
+#message-title {
+    color: #ff4081;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+#message {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -137,12 +148,13 @@
     </div>
     <button id="homeButton" onclick="goHome()">Accueil</button>
     <div class="popup" id="popup">
-        <p id="message"></p>
+        <h1 id="message-title"></h1>
+        <h3 id="message"></h3>
         <button id="nextPuzzle" onclick="nextPuzzle()">Puzzle suivant</button>
     </div>
     <script>
-        let puzzleIndex = 0;
-        const puzzleImages = ["puzzle1.jpg", "puzzle2.jpg", "puzzle3.jpg"];
+        let puzzleIndex = localStorage.getItem("puzzleIndex") ? parseInt(localStorage.getItem("puzzleIndex")) : 0;
+        const puzzleImages = ["puzzle1.jpg", "puzzle2.jpg", "puzzle3.jpg", "puzzle4.jpg", "puzzle5.jpg"];
 
         function goBack() {
             window.location.href = 'main.html';
@@ -195,6 +207,7 @@
                 piece.draggable = true;
                 piece.dataset.correctPos = pos;
                 piece.addEventListener("dragstart", dragStart);
+                piece.addEventListener("dblclick", returnToContainer);
                 piecesContainer.appendChild(piece);
                 initTouchEvents(piece); 
             });
@@ -255,10 +268,11 @@ function checkPuzzle() {
             hiddenImage.style.zIndex = 10;
 
             const popup = document.getElementById("popup");
-            document.getElementById("message").textContent = "Bravo mon cœur, clique sur Puzzle suivant pour compléter le prochain puzzle !";
+            document.getElementById("message-title").textContent = "Bravo mon cœur";
+            document.getElementById("message").textContent = "Clique sur Puzzle suivant pour compléter le prochain puzzle !";
             popup.classList.add("show");
             popup.style.display = "block";
-        }, 3000);
+        }, 1000);
     }
 }
 
@@ -267,6 +281,7 @@ function checkPuzzle() {
 
         function nextPuzzle() {
             puzzleIndex = (puzzleIndex + 1) % puzzleImages.length;
+            localStorage.setItem("puzzleIndex", puzzleIndex);
             const popup = document.getElementById("popup");
             popup.classList.remove("show");
             setTimeout(() => {
@@ -300,35 +315,40 @@ function checkPuzzle() {
             });
 
             piece.addEventListener("touchend", (event) => {
-                if (!activePiece) return;
+    if (!activePiece) return;
 
-                const slots = document.querySelectorAll(".slot");
-                let targetSlot = null;
+    const slots = document.querySelectorAll(".slot");
+    let targetSlot = null;
 
-                slots.forEach((slot) => {
-                    const rect = slot.getBoundingClientRect();
-                    const touch = event.changedTouches[0];
-                    if (
-                        touch.clientX >= rect.left && touch.clientX <= rect.right &&
-                        touch.clientY >= rect.top && touch.clientY <= rect.bottom
-                    ) {
-                        targetSlot = slot;
-                    }
-                });
+    slots.forEach((slot) => {
+        const rect = slot.getBoundingClientRect();
+        const touch = event.changedTouches[0];
+        if (
+            touch.clientX >= rect.left && touch.clientX <= rect.right &&
+            touch.clientY >= rect.top && touch.clientY <= rect.bottom
+        ) {
+            targetSlot = slot;
+        }
+    });
 
-                if (targetSlot && !targetSlot.hasChildNodes()) {
-                    targetSlot.appendChild(activePiece);
-                    activePiece.style.position = "static";
-                    activePiece.style.zIndex = "1";
+    if (targetSlot && !targetSlot.hasChildNodes()) {
+        targetSlot.appendChild(activePiece);
+    } else {
+        // Si la pièce n'est pas déposée dans une case valide, elle revient dans le container
+        document.getElementById("pieces").appendChild(activePiece);
+    }
 
-                    activePiece = null;
-                    checkPuzzle();
-                } else {
-                    activePiece.style.position = "static";
-                    activePiece.style.zIndex = "1";
-                    activePiece = null;
-                }
-            });
+    activePiece.style.position = "static";
+    activePiece.style.zIndex = "1";
+    activePiece = null;
+
+    checkPuzzle();
+});
+
+        }
+
+        function returnToContainer(event) {
+            document.getElementById("pieces").appendChild(event.target);
         }
 
         document.addEventListener("DOMContentLoaded", () => {
