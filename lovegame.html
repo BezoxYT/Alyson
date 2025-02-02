@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeu de Lettres</title>
+    <title>Jeu de Lettres ❤️</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         body {
@@ -54,20 +54,19 @@
             const currentAnswer = Array.from(answerBox.children).map(slot => slot.innerText).join('').replace(/\s+/g, '');
 
             if (currentAnswer === currentWord.replace(/\s+/g, '')) {
-                setTimeout(() => {
-                    alert("Bravo mon cœur ! Tu as trouvé ❤️");
-                    currentLevel++;
-                    localStorage.setItem('currentLevel', currentLevel);
-                    if (currentLevel < words.length) {
-                        loadLevel();
-                    } else {
-                        alert("Félicitations princesse, tu as terminé le jeu !");
-                        localStorage.removeItem('currentLevel');
-                    }
-                }, 500);
-            } else {
-                alert("Tes trop nulle gros caca");
-            }
+        alert("Bravo mon cœur ! Tu as trouvé ❤️");
+         currentLevel++;
+        localStorage.setItem('currentLevel', currentLevel);
+    if (currentLevel < words.length) {
+        loadLevel();
+    } else {
+        alert("Félicitations princesse, tu as terminé le jeu !");
+        localStorage.removeItem('currentLevel');
+    }
+} else {
+    alert("Tes trop nulle gros caca");
+}
+
         }
 
         function createAnswerBox() {
