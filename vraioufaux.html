@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vrai ou Faux ❤️</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+        height: 100vh;
+    }
+
+    .question {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      font-family: 'Wasted Vindey', serif;
+    }
+    .feedback {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-family: 'Wasted Vindey', serif;
+    }
+    .feedback.correct {
+      color: green;
+    }
+    .feedback.incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vrai ou Faux ?</h1>
+    <p class="question" id="question">Je pense à toi chaque jour.</p>
+    <div class="buttons">
+      <button onclick="checkAnswer(true)">Vrai</button>
+      <button onclick="checkAnswer(false)">Faux</button>
+    </div>
+    <p class="feedback" id="feedback"></p>
+    <button class="back-button" onclick="goBack()">Retour</button>
+  </div>
+
+  <script>
+    const questions = [
+      { statement: "Je pense à toi chaque jour.", answer: true },
+      { statement: "Je mesure 6 pieds.", answer: false },
+      { statement: "Notre première rencontre sera inoubliable.", answer: true },
+      { statement: "Tu es la plus belle fille sur terre.", answer: true },
+      { statement: "J'ai hâte de te voir pour la Saint-Valentin.", answer: true },
+      { statement: "J'adore les cornichons.", answer: true },
+      { statement: "Je t'aime.", answer: true },
+      { statement: "J'ai jamais écouté Fast and Furious.", answer: false },
+      { statement: "Je rêve de toi.", answer: true },
+      { statement: "Je vais devenir millionnaire.", answer: true },
+      { statement: "Je veux te faire un câlin.", answer: true },
+      { statement: "Je préfère les pizzas aux burgers.", answer: false },
+      { statement: "Les câlins sont meilleurs sous la pluie.", answer: true },
+      { statement: "J'aime dormir avec des chaussettes.", answer: false },
+      { statement: "Les films romantiques me font pleurer.", answer: true },
+      { statement: "Les voitures est la meilleure invention de l'humanité.", answer: true },
+      { statement: "Je peux passer une journée entière sans penser à toi.", answer: false },
+      { statement: "Les bisous sur le front sont mignons.", answer: true },
+      { statement: "J'adore danser seul dans ma chambre, mais avec toi sa serait mieux", answer: true },
+      { statement: "Un massage des pieds est plus agréable qu'un câlin.", answer: false },
+      { statement: "Les glaces à la vanille sont meilleures que celles au chocolat.", answer: false },
+      { statement: "Je suis un excellent danseur.", answer: false },
+      { statement: "J'adore les films d'horreur.", answer: false },
+      { statement: "Je pourrais te regarder sourire toute la journée.", answer: true },
+      { statement: "Le matin, je suis toujours de bonne humeur.", answer: true },
+      { statement: "J'aime quand tu ris à mes blagues, même les nulles.", answer: true },
+      { statement: "Je pourrais survivre sans mon téléphone, mais pas sans toi.", answer: true },
+      { statement: "Sophie Rain est plus belle que toi", answer: false}
+    ];
+
+    let current = 0;
+
+    function checkAnswer(choice) {
+      const feedback = document.getElementById('feedback');
+      const isCorrect = choice === questions[current].answer;
+      feedback.textContent = isCorrect ? "Bonne réponse mon coeur!" : "Mauvaise réponse gros caca !";
+      feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+
+      setTimeout(() => {
+        feedback.textContent = '';
+        current = (current + 1) % questions.length;
+        document.getElementById('question').textContent = questions[current].statement;
+      }, 1500);
+    }
+    function goBack() {
+            window.location.href = 'main.html';
+        }
+  </script>
+</body>
+</html>

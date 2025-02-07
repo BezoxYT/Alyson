@@ -9,6 +9,45 @@
         body {
             height:100vh;
         }
+        .locked {
+            background-color: #ffe6e6; /* Indique qu'une lettre est bloquée */
+            pointer-events: none; /* Empêche les clics */
+        }
+        .popup-mot {
+    visibility: hidden; /* Remplace display: none */
+    opacity: 0;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1000;
+    background-color: #ffe6e6;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 80%;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s linear 0.3s; /* Délai pour cacher */
+}
+
+.popup-mot.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out, visibility 0s; /* Annule le délai à l'affichage */
+}
+
+.overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0s linear 0.3s;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-out, visibility 0s;
+}
+
     </style>
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -27,8 +66,16 @@
         <div id="letterChoices" class="letter-choices"></div>
         
         <button onclick="checkAnswer()">Vérifier</button>
-        <button onclick="giveHint()">Indice</button>
+        <button onclick="giveHint()">Indice (<span id="hintCount">3</span> restants)</button>
         <button onclick="goBack()">Retour</button>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup-mot" id="popup-mot">
+        <p id="popupMessage"></p>
+        <button id="nextButton" onclick="nextWord()">Prochain Mot</button>
+        <button id="retryButton" onclick="closePopup()">Réessayer</button>
+        <button onclick="goBack()">Retour à l'Accueil</button>
     </div>
     
     <script>
@@ -40,11 +87,15 @@
             "complicité", "tendresse", "douceur", "passion", "sérénité",
             "plénitude", "harmonie", "éternité"
         ];
+
         let currentLevel = localStorage.getItem('currentLevel') ? parseInt(localStorage.getItem('currentLevel')) : 0;
         let currentWord = words[currentLevel];
+        let hintCount = 3; // Limite d'indices par mot
 
         function loadLevel() {
             currentWord = words[currentLevel];
+            hintCount = 3; // Réinitialisation des indices
+            document.getElementById('hintCount').innerText = hintCount;
             createAnswerBox();
             createLetterChoices();
         }
@@ -54,19 +105,43 @@
             const currentAnswer = Array.from(answerBox.children).map(slot => slot.innerText).join('').replace(/\s+/g, '');
 
             if (currentAnswer === currentWord.replace(/\s+/g, '')) {
-        alert("Bravo mon cœur ! Tu as trouvé ❤️");
-         currentLevel++;
-        localStorage.setItem('currentLevel', currentLevel);
-    if (currentLevel < words.length) {
-        loadLevel();
-    } else {
-        alert("Félicitations princesse, tu as terminé le jeu !");
-        localStorage.removeItem('currentLevel');
-    }
-} else {
-    alert("Tes trop nulle gros caca");
+                showPopup("Bravo mon cœur ! Tu as trouvé ❤️", true);
+            } else {
+                showPopup("T'es trop NULLE gros caca !", false);
+            }
+        }
+
+        function showPopup(message, success) {
+    document.getElementById('popupMessage').innerText = message;
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup-mot');
+
+    overlay.classList.add('show');
+    popup.classList.add('show');
+
+    document.getElementById('nextButton').style.display = success ? 'inline' : 'none';
+    document.getElementById('retryButton').style.display = success ? 'none' : 'inline';
 }
 
+function closePopup() {
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup-mot');
+
+    overlay.classList.remove('show');
+    popup.classList.remove('show');
+}
+
+
+        function nextWord() {
+            currentLevel++;
+            localStorage.setItem('currentLevel', currentLevel);
+            if (currentLevel < words.length) {
+                loadLevel();
+            } else {
+                showPopup("Félicitations princesse, tu as terminé le jeu !", false);
+                localStorage.removeItem('currentLevel');
+            }
+            closePopup();
         }
 
         function createAnswerBox() {
@@ -113,7 +188,7 @@
         }
 
         function handleSlotClick(slot) {
-            if (slot.innerText !== '') {
+            if (slot.innerText !== '' && !slot.classList.contains('locked')) {
                 const letterChoices = document.getElementById('letterChoices');
                 const letterBlock = document.createElement('p');
                 letterBlock.classList.add('letterBlock');
@@ -125,14 +200,35 @@
         }
 
         function giveHint() {
+            if (hintCount <= 0) return; // Limite atteinte
+
             const slots = document.getElementById('answerBox').children;
             const letters = currentWord.replace(/\s+/g, '').split('');
+
+            const incorrectIndexes = [];
             for (let i = 0; i < slots.length; i++) {
-                if (slots[i].innerText === '') {
-                    slots[i].innerText = letters[i];
-                    hideUsedLetter(letters[i]);
-                    break;
+                if (slots[i].innerText !== letters[i] && !slots[i].classList.contains('locked')) {
+                    incorrectIndexes.push(i);
                 }
+            }
+
+            if (incorrectIndexes.length > 0) {
+                const randomIndex = incorrectIndexes[Math.floor(Math.random() * incorrectIndexes.length)];
+
+                if (slots[randomIndex].innerText !== '') {
+                    const letterBlock = document.createElement('p');
+                    letterBlock.classList.add('letterBlock');
+                    letterBlock.textContent = slots[randomIndex].innerText;
+                    letterBlock.onclick = () => handleLetterClick(letterBlock);
+                    document.getElementById('letterChoices').appendChild(letterBlock);
+                }
+
+                slots[randomIndex].innerText = letters[randomIndex];
+                slots[randomIndex].classList.add('locked'); // Bloquer la lettre
+                hideUsedLetter(letters[randomIndex]);
+
+                hintCount--;
+                document.getElementById('hintCount').innerText = hintCount;
             }
         }
 
